@@ -1,11 +1,19 @@
 # Plumblint
 
+[![PyPI version](https://img.shields.io/pypi/v/plumblint.svg)](https://pypi.org/project/plumblint/)
+[![Python versions](https://img.shields.io/pypi/pyversions/plumblint.svg)](https://pypi.org/project/plumblint/)
+[![CI](https://github.com/knbtz65v2c-pixel/plumblint/actions/workflows/ci.yml/badge.svg)](https://github.com/knbtz65v2c-pixel/plumblint/actions/workflows/ci.yml)
+
 Prompt injection detector for LLM applications. **Zero dependencies, no network calls, no telemetry.**
 
 Runs on the Python standard library alone. Nothing to install beyond the
 package itself, nothing phones home, and scanned text goes nowhere except the
 verdict returned to the caller (whose `evidence` fields echo the matched
 substring, normalised, capped at 160 chars).
+
+```bash
+python -m pip install plumblint
+```
 
 ```python
 from plumblint import scan
