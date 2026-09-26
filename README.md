@@ -178,10 +178,10 @@ thread exhaustion, chunked encoding without a length, and oversized bodies.
 
 ## Install and use
 
-Until a package is published, install from a checked-out copy:
+Install from PyPI:
 
 ```bash
-python -m pip install .        # no runtime dependencies
+python -m pip install plumblint        # no runtime dependencies
 ```
 
 **Library**

@@ -18,7 +18,7 @@ from .detector import (
 )
 from .signals import Signal
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __all__ = [
     "scan", "is_injection", "Verdict", "Signal",
     "THRESHOLD_SUSPICIOUS", "THRESHOLD_INJECTION",
