@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plumblint"
+version = "0.1.0"
+description = "Prompt injection detector with published calibration. Zero dependencies."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "PolyForm-Noncommercial-1.0.0"
+license-files = ["LICENSE"]
+authors = [{name = "Fuad Poladov"}]
+keywords = ["prompt-injection", "llm-security", "owasp", "guardrails", "ai-security"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+]
+dependencies = []
+
+# Package-index publication is a separate release step. PEP 639 records the
+# SPDX expression and includes the canonical licence text in distributions.
+
+[project.urls]
+Homepage = "https://github.com/knbtz65v2c-pixel/plumblint"
+Repository = "https://github.com/knbtz65v2c-pixel/plumblint"
+Issues = "https://github.com/knbtz65v2c-pixel/plumblint/issues"
+
+[project.scripts]
+plumblint = "plumblint.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["plumblint*"]
