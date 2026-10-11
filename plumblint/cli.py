@@ -7,8 +7,8 @@ collide with verdicts:
     1  suspicious
     2  injection (and suspicious under --strict)
     3  input error: no input, empty input, unreadable file, input longer
-       than the scan window (a silent prefix-only verdict would read as
-       "clean" to the caller - refusing is the honest answer)
+       than one scan window (refused here; the library scan() reads longer
+       input in overlapping windows - see CONTRACT.md)
     64 usage error
 
 Code 3 keeps input failures distinct from verdicts. A missing file or empty
@@ -83,9 +83,10 @@ def main(argv=None) -> int:
 
     from .detector import MAX_INPUT_CHARS
     if len(text) > MAX_INPUT_CHARS:
-        print(f"error: input is {len(text)} chars, scan window is "
-              f"{MAX_INPUT_CHARS}; a verdict would cover only a prefix. "
-              f"Split the input and scan the parts.", file=sys.stderr)
+        print(f"error: input is {len(text)} chars; the command line accepts "
+              f"at most {MAX_INPUT_CHARS} (one scan window). Split the input "
+              f"and scan the parts, or call scan() from Python, which reads "
+              f"longer input in windows.", file=sys.stderr)
         return EXIT_ERROR
 
     v = scan(text)

@@ -18,7 +18,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-ROW = re.compile(r"^\|\s*`([A-Za-z_.\[\]\"']+)`\s*\|\s*([0-9.]+)\s*\|")
+# digits are allowed in a name (B64_MAX_DEPTH): a row that fails this pattern
+# ends the table silently, which drops every later declaration.
+ROW = re.compile(r"^\|\s*`([A-Za-z0-9_.\[\]\"']+)`\s*\|\s*([0-9.]+)\s*\|")
 
 
 def declared_constants(contract_text: str) -> dict:
@@ -39,6 +41,7 @@ def declared_constants(contract_text: str) -> dict:
 
 def actual_constants() -> dict:
     from plumblint import detector as d
+    from plumblint import normalize as nm
     from plumblint import signals as sg
     import calibrate as cal
     values = {
@@ -46,6 +49,10 @@ def actual_constants() -> dict:
         "THRESHOLD_INJECTION": d.THRESHOLD_INJECTION,
         "OBFUSCATION_BOOST": d.OBFUSCATION_BOOST,
         "MAX_SINGLE_WEIGHT": d.MAX_SINGLE_WEIGHT,
+        "B64_MAX_DEPTH": nm.B64_MAX_DEPTH,
+        "B64_MAX_DECODED_BYTES": nm.B64_MAX_DECODED_BYTES,
+        "WINDOW_OVERLAP_CHARS": d.WINDOW_OVERLAP_CHARS,
+        "MAX_SCAN_WINDOWS": d.MAX_SCAN_WINDOWS,
         "MITIGATOR_QUOTED": sg.MITIGATOR_QUOTED,
         "MITIGATOR_INTERROGATIVE": sg.MITIGATOR_INTERROGATIVE,
         "MITIGATOR_META": sg.MITIGATOR_META,

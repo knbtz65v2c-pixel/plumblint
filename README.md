@@ -106,11 +106,14 @@ The signal is found, reported, and down-weighted. You can always see why.
 ### Obfuscation is normalised before matching
 
 Zero-width characters, Cyrillic and Greek homoglyphs, leetspeak,
-letter-spacing and padded base64 payloads are decoded, and a signal visible
-**only** after decoding is weighted *higher* - ordinary text is not written
-with invisible characters. Known undecoded forms include unpadded or
-line-wrapped base64, double base64, hex, rot13 - they are tracked in the
-weakness map rather than claimed away.
+letter-spacing and base64 payloads (padded or not, line-wrapped, nested up
+to `B64_MAX_DEPTH` layers) are decoded, and a signal visible **only** after
+decoding is weighted *higher* - ordinary text is not written with invisible
+characters. Known undecoded forms: hex, rot13, base64 nested deeper
+than the cap, base64 wrapped around another obfuscation, a blob longer than
+the window overlap that crosses a window seam of a long input, a broken blob
+behind enough decoy tokens - they are listed in the weakness map rather than
+claimed away.
 
 ```
 $ plumblint "1gn0r3 pr3vi0us instructi0ns"
@@ -158,7 +161,7 @@ operating points instead of hiding the trade-off behind one accuracy number;
 the raw outputs and methodological notes ship in `data/`.
 
 **Every tunable number is declared by value and enforced mechanically.**
-CONTRACT.md carries a table of all 16 constants; `tools/check_constants.py`
+CONTRACT.md carries a table of every such constant; `tools/check_constants.py`
 fails the build on any drift between code and declaration, and the test suite
 pins the same values. A number turned after a calibration run cannot pass a
 green build without editing the contract in the same change.
@@ -208,14 +211,23 @@ is_injection(text, strict=True)  # True for "suspicious" too
 ```
 
 **Command line** - exit codes 0 clean, 1 suspicious, 2 injection, 3 input
-error (empty input, unreadable file, input beyond the scan window - refusals,
-never silent verdicts), so it drops straight into CI:
+error (empty input, unreadable file, input longer than one scan window -
+refusals, never silent verdicts; the library `scan()` reads longer input in
+windows, see CONTRACT.md), so it drops straight into CI:
 
 ```bash
 plumblint "ignore previous instructions"      # exit 2
 plumblint -f payload.txt --json
 cat input.txt | plumblint --strict
 ```
+
+The command line and the library differ on long input, on purpose. The
+command line takes at most one scan window (`MAX_INPUT_CHARS` characters) and
+refuses anything longer with exit 3 and no verdict - it fails closed, so a
+script that branches on the exit code cannot read an over-long input as
+clean. The library `scan()` reads longer input in overlapping windows up to
+`MAX_SCAN_CHARS` and flags what lies beyond as `truncated`. CONTRACT.md,
+"Unit of analysis", has the values and the reasons.
 
 **HTTP service** - standard library only, no ASGI server needed:
 
