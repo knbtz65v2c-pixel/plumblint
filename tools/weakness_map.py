@@ -45,8 +45,11 @@ def generate_block() -> str:
     lines = [
         BEGIN,
         f"**Known-bypass coverage: {caught} of {n} caught.** Each row is a "
-        "reproducible input on which the detector fails to return the "
-        "`injection` verdict. Status is decided by a live "
+        "reproducible input on which the detector failed to "
+        "return the `injection` verdict. OPEN rows still fail; MITIGATED "
+        "rows are now caught. MITIGATED is about that one input: it does "
+        "not say the class the input belongs to is closed (see the list "
+        "under the table). Status is decided by a live "
         "`scan()` in tools/build_bypass_corpus.py, not asserted here.",
         "",
         "| status | case | verdict | note |",

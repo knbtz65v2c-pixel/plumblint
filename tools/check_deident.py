@@ -37,6 +37,10 @@ ALLOW = {
     ("tools/check_deident.py", "Poladov"),
     ("tools/check_deident.py", "MacBook-Pro"),
     ("tools/check_deident.py", "/Users/"),
+    # an unpacked sdist also holds metadata that setuptools writes from
+    # pyproject.toml; only its author line, the same author allowed above
+    ("PKG-INFO", "Author: Fuad Poladov"),
+    ("plumblint.egg-info/PKG-INFO", "Author: Fuad Poladov"),
 }
 
 SKIP_DIRS = {".git", "__pycache__", ".venv", "venv", "build", "dist"}

@@ -9,6 +9,9 @@ include calibrate.py
 recursive-include data *.json *.jsonl *.md *.txt
 recursive-include tools *.py
 recursive-include tests *.py
+# the suite reads the CI workflow (TestCiMechanical); without it the gate
+# errors when run from an unpacked sdist
+recursive-include .github/workflows *.yml
 
 global-exclude __pycache__
 global-exclude *.py[cod]
